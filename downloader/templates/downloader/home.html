@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Video Downloader</title>
+    <link rel="stylesheet" href="{% static 'downloader/css/style.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="download-container">
+            <h1><i class="fab fa-tiktok"></i> TikTok Downloader</h1>
+            
+            <div class="download-form">
+                <form id="downloadForm" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        {{ form.url }}
+                        <button type="submit" id="downloadBtn">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="previewSection" class="preview-section" style="display: none;">
+                <div class="preview-content">
+                    <div class="video-info">
+                        <div class="thumbnail">
+                            <img id="videoThumbnail" src="" alt="Video thumbnail">
+                            <div class="play-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="info">
+                            <h3 id="videoTitle">Video Title</h3>
+                            <p id="videoAuthor">@author</p>
+                        </div>
+                    </div>
+
+                    <div class="download-options">
+                        <div class="quality-options">
+                            <button class="quality-btn active" data-quality="hd">
+                                <i class="fas fa-video"></i> HD Quality
+                            </button>
+                            <button class="quality-btn" data-quality="sd">
+                                <i class="fas fa-video"></i> SD Quality
+                            </button>
+                        </div>
+                        
+                        <div class="watermark-options">
+                            <label class="toggle">
+                                <input type="checkbox" id="watermarkToggle">
+                                <span class="slider"></span>
+                                <span class="label">Remove Watermark</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="download-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">Processing video...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result" class="result-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('downloadForm');
+            const resultDiv = document.getElementById('result');
+            const previewSection = document.getElementById('previewSection');
+            const progressBar = document.querySelector('.progress-fill');
+            const progressText = document.querySelector('.progress-text');
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const url = form.querySelector('input[name="url"]').value;
+                if (!url) return;
+
+                // Show preview section
+                previewSection.style.display = 'block';
+                progressBar.style.width = '0%';
+                progressText.textContent = 'Getting video info...';
+
+                try {
+                    // Get video info
+                    const infoResponse = await fetch('/get_video_info/', {
+                        method: 'POST',
+                        body: new URLSearchParams({
+                            'url': url
+                        })
+                    });
+
+                    const infoData = await infoResponse.json();
+                    
+                    if (infoData.status === 'success') {
+                        // Update preview
+                        document.getElementById('videoThumbnail').src = infoData.thumbnail;
+                        document.getElementById('videoTitle').textContent = infoData.title;
+                        document.getElementById('videoAuthor').textContent = infoData.author;
+                        
+                        // Start download
+                        progressText.textContent = 'Downloading video...';
+                        
+                        const downloadResponse = await fetch('/process/', {
+                            method: 'POST',
+                            body: new URLSearchParams({
+                                'url': url,
+                                'quality': document.querySelector('.quality-btn.active').dataset.quality,
+                                'remove_watermark': document.getElementById('watermarkToggle').checked
+                            })
+                        });
+
+                        const data = await downloadResponse.json();
+                        
+                        if (data.status === 'success') {
+                            progressBar.style.width = '100%';
+                            progressText.textContent = 'Download ready!';
+                            
+                            resultDiv.innerHTML = `
+                                <div class="success">
+                                    <p>${data.message}</p>
+                                    <a href="${data.download_url}" class="download-button">
+                                        <i class="fas fa-download"></i> Download Video
+                                    </a>
+                                </div>`;
+                        } else {
+                            throw new Error(data.message);
+                        }
+                    } else {
+                        throw new Error(infoData.message);
+                    }
+                    
+                } catch (error) {
+                    progressBar.style.width = '0%';
+                    progressText.textContent = 'Error occurred';
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <p>${error.message || 'An error occurred. Please try again.'}</p>
+                        </div>`;
+                }
+            });
+
+            // Quality button handlers
+            document.querySelectorAll('.quality-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
