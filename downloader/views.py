@@ -11,6 +11,33 @@ import re
 import time
 from bs4 import BeautifulSoup
 
+FAQ_DATA = [
+    {
+        'question': 'How to download TikTok videos?',
+        'answer': 'Simply paste the TikTok video URL in the input field above, select your preferred quality, and click download.'
+    },
+    {
+        'question': 'Is it free to use?',
+        'answer': 'Yes, our service is completely free to use with no limitations or restrictions.'
+    },
+    {
+        'question': 'Can I download videos without watermark?',
+        'answer': 'Yes, you can download TikTok videos without watermark in HD quality by using our service.'
+    },
+    {
+        'question': 'What formats are supported?',
+        'answer': 'We support MP4 video downloads in both HD and SD quality, as well as MP3 audio extraction.'
+    },
+    {
+        'question': 'Is there a download limit?',
+        'answer': 'No, there is no limit to the number of videos you can download.'
+    },
+    {
+        'question': 'Do I need to install any software?',
+        'answer': 'No, our service is completely web-based. No need to install any software.'
+    }
+]
+
 logger = logging.getLogger(__name__)
 
 @ensure_csrf_cookie
