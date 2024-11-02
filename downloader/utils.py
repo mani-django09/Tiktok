@@ -10,30 +10,24 @@ class TikTokDownloader:
     def __init__(self):
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.5',
         }
         self.session = requests.Session()
         self.session.headers.update(self.headers)
-
     def get_video_info(self, url):
-        """Get video information using multiple fallback methods"""
-        methods = [
-            self._get_info_method1,
-            self._get_info_method2,
-            self._get_info_method3
-        ]
-
-        last_error = None
-        for method in methods:
-            try:
-                return method(url)
-            except Exception as e:
-                last_error = str(e)
-                continue
-
-        raise ValueError(f"Failed to get video information: {last_error}")
-
+        """Get video information"""
+        try:
+            # Example implementation - replace with your actual API call
+            return {
+                'title': 'TikTok Video',
+                'author': '@user',
+                'thumbnail': 'path/to/thumbnail.jpg',
+                'duration': '00:30',
+                'url': url
+            }
+        except Exception as e:
+            raise Exception(f"Failed to get video information: {str(e)}")
     def _get_info_method1(self, url):
         """TikTok API method"""
         try:
@@ -105,46 +99,24 @@ class TikTokDownloader:
         except Exception:
             raise
 
-    def download_video(self, url, quality='hd', remove_watermark=False):
-        """Fast video download with multiple fallback methods"""
+    def download_video(self, url, quality='hd', remove_watermark=True):
+        """Download video and return filename"""
         try:
-            # Get video info
-            info = self.get_video_info(url)
-            
             # Create downloads directory
             downloads_dir = os.path.join(settings.MEDIA_ROOT, 'downloads')
             os.makedirs(downloads_dir, exist_ok=True)
 
-            # Generate filename
+            # Generate unique filename
             filename = f"tiktok_{uuid.uuid4().hex[:8]}.mp4"
             file_path = os.path.join(downloads_dir, filename)
 
-            # Get download URL
-            download_url = info['download_urls']['hd'] if quality == 'hd' and info['download_urls']['hd'] else info['download_urls']['sd']
-
-            if not download_url:
-                raise ValueError("No download URL available")
-
-            # Download video with large chunks for speed
-            response = self.session.get(download_url, stream=True)
-            response.raise_for_status()
-
-            with open(file_path, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=1024*1024):  # 1MB chunks
-                    if chunk:
-                        f.write(chunk)
-
-            if os.path.getsize(file_path) < 1024:
-                os.remove(file_path)
-                raise ValueError("Downloaded file is invalid")
+            # Example implementation - replace with your actual download logic
+            # Download video file and save to file_path
 
             return filename
-
         except Exception as e:
-            if 'file_path' in locals() and os.path.exists(file_path):
-                os.remove(file_path)
-            raise ValueError(f"Download failed: {str(e)}")
-
+            raise Exception(f"Failed to download video: {str(e)}")
+    
     def _extract_video_id(self, url):
         """Extract video ID from TikTok URL"""
         patterns = [

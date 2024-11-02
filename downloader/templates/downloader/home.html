@@ -1,164 +1,166 @@
+{% extends 'downloader/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Video Downloader</title>
-    <link rel="stylesheet" href="{% static 'downloader/css/style.css' %}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
+
+{% block content %}
+<section class="hero-gradient">
+    <div class="logo-header">
+        <a href="/" class="logo">
+            <i class="fas fa-download"></i>
+            <span>TikTok Downloader</span>
+        </a>
+    </div>
+
     <div class="container">
-        <div class="download-container">
-            <h1><i class="fab fa-tiktok"></i> TikTok Downloader</h1>
-            
-            <div class="download-form">
-                <form id="downloadForm" method="post">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        {{ form.url }}
-                        <button type="submit" id="downloadBtn">
-                            <i class="fas fa-download"></i> Download
-                        </button>
-                    </div>
-                </form>
+        <h1>Download TikTok Videos Without Watermark</h1>
+        <p class="hero-subtitle">Fast & Free TikTok video downloader - High quality MP4/MP3</p>
+
+        <div class="download-form">
+            <form id="downloadForm">
+                <div class="input-group">
+                    <input type="text" class="url-input" placeholder="Paste TikTok video URL here" required>
+                    <button type="button" class="paste-btn">
+                        <i class="far fa-clipboard"></i>
+                        Paste
+                    </button>
+                </div>
+                <button type="submit" class="download-btn">
+                    <i class="fas fa-download"></i>
+                    Download Video
+                </button>
+            </form>
+            <div id="resultContainer"></div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+                <h3>Unlimited Downloads</h3>
+                <p>Download as many TikTok videos as you want, completely free and without restrictions</p>
             </div>
 
-            <div id="previewSection" class="preview-section" style="display: none;">
-                <div class="preview-content">
-                    <div class="video-info">
-                        <div class="thumbnail">
-                            <img id="videoThumbnail" src="" alt="Video thumbnail">
-                            <div class="play-icon">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="info">
-                            <h3 id="videoTitle">Video Title</h3>
-                            <p id="videoAuthor">@author</p>
-                        </div>
-                    </div>
+            <div class="feature-card animate-on-scroll delay-1">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>No Watermark</h3>
+                <p>Download videos without the TikTok watermark in their original high quality</p>
+            </div>
 
-                    <div class="download-options">
-                        <div class="quality-options">
-                            <button class="quality-btn active" data-quality="hd">
-                                <i class="fas fa-video"></i> HD Quality
-                            </button>
-                            <button class="quality-btn" data-quality="sd">
-                                <i class="fas fa-video"></i> SD Quality
-                            </button>
-                        </div>
-                        
-                        <div class="watermark-options">
-                            <label class="toggle">
-                                <input type="checkbox" id="watermarkToggle">
-                                <span class="slider"></span>
-                                <span class="label">Remove Watermark</span>
-                            </label>
-                        </div>
-                    </div>
+            <div class="feature-card animate-on-scroll delay-2">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Fast Downloads</h3>
+                <p>Our servers ensure the fastest possible download speeds for your videos</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-                    <div class="download-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                        </div>
-                        <div class="progress-text">Processing video...</div>
-                    </div>
+<section class="how-to section-spacing">
+    <div class="container">
+        <div class="section-header">
+            <h2>How to Download TikTok Videos</h2>
+        </div>
+
+        <div class="steps-container">
+            <div class="step-item animate-on-scroll">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Copy Video Link</h3>
+                    <p>Open TikTok app, find the video you want to download, tap "Share" and copy the link</p>
                 </div>
             </div>
 
-            <div id="result" class="result-container"></div>
+            <div class="step-item animate-on-scroll delay-1">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Paste URL</h3>
+                    <p>Come back here and paste the link in the input field above</p>
+                </div>
+            </div>
+
+            <div class="step-item animate-on-scroll delay-2">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Download</h3>
+                    <p>Click the download button and choose your preferred format (MP4/MP3)</p>
+                </div>
+            </div>
         </div>
     </div>
+</section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('downloadForm');
-            const resultDiv = document.getElementById('result');
-            const previewSection = document.getElementById('previewSection');
-            const progressBar = document.querySelector('.progress-fill');
-            const progressText = document.querySelector('.progress-text');
-            
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const url = form.querySelector('input[name="url"]').value;
-                if (!url) return;
+<section class="faq section-spacing">
+    <div class="container">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+        </div>
 
-                // Show preview section
-                previewSection.style.display = 'block';
-                progressBar.style.width = '0%';
-                progressText.textContent = 'Getting video info...';
+        <div class="faq-container">
+            <div class="faq-item animate-on-scroll">
+                <div class="faq-question">
+                    <h3>Is it free to use?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, our TikTok video downloader is completely free to use with no limitations.</p>
+                </div>
+            </div>
 
-                try {
-                    // Get video info
-                    const infoResponse = await fetch('/get_video_info/', {
-                        method: 'POST',
-                        body: new URLSearchParams({
-                            'url': url
-                        })
-                    });
+            <div class="faq-item animate-on-scroll delay-1">
+                <div class="faq-question">
+                    <h3>Can I download videos without watermark?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, all videos downloaded through our service come without the TikTok watermark while maintaining the original quality.</p>
+                </div>
+            </div>
 
-                    const infoData = await infoResponse.json();
-                    
-                    if (infoData.status === 'success') {
-                        // Update preview
-                        document.getElementById('videoThumbnail').src = infoData.thumbnail;
-                        document.getElementById('videoTitle').textContent = infoData.title;
-                        document.getElementById('videoAuthor').textContent = infoData.author;
-                        
-                        // Start download
-                        progressText.textContent = 'Downloading video...';
-                        
-                        const downloadResponse = await fetch('/process/', {
-                            method: 'POST',
-                            body: new URLSearchParams({
-                                'url': url,
-                                'quality': document.querySelector('.quality-btn.active').dataset.quality,
-                                'remove_watermark': document.getElementById('watermarkToggle').checked
-                            })
-                        });
+            <div class="faq-item animate-on-scroll delay-2">
+                <div class="faq-question">
+                    <h3>What formats are supported?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We support downloading videos in MP4 format (HD/SD quality) and extracting audio in MP3 format.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-                        const data = await downloadResponse.json();
-                        
-                        if (data.status === 'success') {
-                            progressBar.style.width = '100%';
-                            progressText.textContent = 'Download ready!';
-                            
-                            resultDiv.innerHTML = `
-                                <div class="success">
-                                    <p>${data.message}</p>
-                                    <a href="${data.download_url}" class="download-button">
-                                        <i class="fas fa-download"></i> Download Video
-                                    </a>
-                                </div>`;
-                        } else {
-                            throw new Error(data.message);
-                        }
-                    } else {
-                        throw new Error(infoData.message);
-                    }
-                    
-                } catch (error) {
-                    progressBar.style.width = '0%';
-                    progressText.textContent = 'Error occurred';
-                    resultDiv.innerHTML = `
-                        <div class="error">
-                            <p>${error.message || 'An error occurred. Please try again.'}</p>
-                        </div>`;
-                }
-            });
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>We provide a fast and free service to download TikTok videos without watermark in high quality.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-to">How to Download</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {% now "Y" %} TikTok Downloader. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{% endblock %}
 
-            // Quality button handlers
-            document.querySelectorAll('.quality-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+{% block extra_js %}
+<script src="{% static 'downloader/js/animations.js' %}"></script>
+<script src="{% static 'downloader/js/main.js' %}"></script>
+{% endblock %}
