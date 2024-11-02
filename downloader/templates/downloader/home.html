@@ -2,93 +2,56 @@
 {% load static %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-gradient">
+<section class="hero-section">
     <div class="container">
-        <div class="hero-content animate-fade-in">
-            <div class="logo-header floating">
-                <i class="fab fa-tiktok gradient-icon"></i>
-                <h1>TikTok Downloader</h1>
+        <h1 class="main-title">TikTok Video Downloader</h1>
+        
+        <div class="download-form">
+            <div class="input-group">
+                <input type="text" class="url-input" placeholder="Just paste a URL">
+                <button class="download-btn">Download</button>
             </div>
-            <p class="subtitle">Fast & Free Video Downloader - No Watermark</p>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <div class="feature">
+                <h3>Unlimited</h3>
+                <p>Save as many videos as you need - without any limit.</p>
+            </div>
+            <div class="feature">
+                <h3>No Watermark!</h3>
+                <p>Download TikTok video without watermark or remove a TT logo.</p>
+            </div>
+            <div class="feature">
+                <h3>MP4 and MP3</h3>
+                <p>Save files in HD quality, convert TikTok to mp4 or mp3.</p>
+            </div>
+        </div>
+
+        <!-- How to Download Section -->
+        <div class="how-to-section">
+            <h2>Download TikTok video Without Watermark</h2>
+            <p class="how-to-desc">SSSTIK is a free TikTok video downloader without watermark tool that helps you download TikTok videos without watermark (Musically) online in mp4 format and in HD resolution. Download your favorite TikTok video without watermark in three steps:</p>
             
-            <div class="download-form">
-                <form id="downloadForm" class="animate-fade-in">
-                    <div class="input-group">
-                        <input 
-                            type="text" 
-                            class="url-input" 
-                            placeholder="🔗 Paste TikTok video URL here..."
-                        >
-                        <button type="button" class="paste-btn">
-                            <i class="fas fa-paste"></i>
-                            Paste
-                        </button>
-                    </div>
-                    <button type="submit" class="download-btn">
-                        <span class="btn-content">
-                            <i class="fas fa-download"></i>
-                            Download Now
-                        </span>
-                        <div class="loader" style="display: none;"></div>
-                    </button>
-                </form>
-                <div id="resultContainer"></div>
-            </div>
-
-            <div class="trust-badges">
-                <div class="badge">
-                    <i class="fas fa-bolt"></i>
-                    <span>Fast Download</span>
-                </div>
-                <div class="badge">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>100% Safe</span>
-                </div>
-                <div class="badge">
-                    <i class="fas fa-ban"></i>
-                    <span>No Watermark</span>
-                </div>
+            <div class="instructions">
+                <h3>How to download TikTok without watermark?</h3>
+                <ul>
+                    <li>
+                        <strong>Find a TT</strong>
+                        <p>- Play the video you'd like to save to your mobile device, using the TT app</p>
+                    </li>
+                    <li>
+                        <strong>Copy the link</strong>
+                        <p>- Tap "Share" (the arrow button on top of your video), and then tap "Copy link"</p>
+                    </li>
+                    <li>
+                        <strong>Save TikTok</strong>
+                        <p>- Go to the TikTok download without watermark service and paste the link in the text field on the page and tap on the "Save" button</p>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </section>
-
-<!-- Features Section -->
-
-
-<!-- How It Works Section -->
-<section class="how-it-works">
-    <div class="container">
-        <div class="section-header">
-            <h2>How It Works</h2>
-            <p>Download your favorite TikTok videos in 3 easy steps</p>
-        </div>
-
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <h3>Copy Link</h3>
-                <p>Copy the video link from TikTok app</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h3>Paste URL</h3>
-                <p>Paste the link in our download box</p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h3>Download</h3>
-                <p>Click download and get your video</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ Section -->
-
-<!-- Footer -->
-
 {% endblock %}
